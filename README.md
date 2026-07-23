@@ -1,98 +1,82 @@
-# vinext-starter
+# Paul Signac — Light, Divided
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+An English, reusable artist-portfolio website built around the colour, atmosphere, and divisionist brushwork of Paul Signac. The first edition presents Signac's life, artistic journey, and selected works through a five-page editorial gallery.
 
-## Prerequisites
+**Live site:** [paul-signac-dusk-gallery.zhlei86.chatgpt.site](https://paul-signac-dusk-gallery.zhlei86.chatgpt.site)
 
-- Node.js `>=22.13.0`
+![Paul Signac — Light, Divided social preview](public/og.png)
 
-## Quick Start
+## What is included
+
+- Five responsive routes: Home, About, Journey, Works, and Contact.
+- A central, typed content model for the artist profile, chronology, artwork records, and contact links.
+- A keyboard-accessible artwork viewer with filtering, focus management, and Escape-to-close behavior.
+- A visual system drawn from *Avignon. Soir (le chateau des Papes)* (1909): river blue, dusk violet, coral architecture, and warm evening light.
+- Subtle CSS colour fragments and gradients that evoke Divisionism without compromising reading comfort.
+- Reduced-motion support and mobile-friendly navigation.
+- Local artwork assets, a custom favicon, and a matching social-sharing card.
+
+## Technology
+
+- React 19 + TypeScript
+- Vinext / Vite
+- Plain CSS with responsive layouts and accessible interaction patterns
+- pnpm
+
+## Run locally
+
+Use Node.js 22.13 or newer and pnpm.
 
 ```bash
-npm install
-npm run dev
-npm run build
+pnpm install
+pnpm dev
 ```
 
-This starter does not use `wrangler.jsonc`.
+Create a production build:
 
-## Included Shape
-
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```bash
+pnpm build
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+Run the production render checks:
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+```bash
+pnpm test
+```
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+## Project structure
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+```text
+app/
+  about/             About page
+  contact/           Contact page
+  journey/           Timeline page
+  works/             Artwork gallery page
+  components/        Shared site chrome and accessible gallery dialog
+  data.ts            Reusable artist, timeline, artwork, and contact data
+  globals.css        Visual system and responsive styles
+public/
+  artworks/          Five curated local artwork images
+  og.png             Social-sharing image
+tests/
+  rendered-html.test.mjs
+```
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+## Reuse this as an artist-site template
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+The page structure and presentation are separated from the content. To adapt the site for another artist or creator:
 
-## Useful Commands
+1. Replace the records in `app/data.ts`.
+2. Replace the images in `public/artworks/` and update their image paths and alt text.
+3. Adjust the colour tokens and typography in `app/globals.css`.
+4. Update the metadata and social image in `app/layout.tsx` and `public/og.png`.
 
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+## Research and image credits
 
-## Learn More
+The companion biography and source notes are maintained in the parent project folder as `Paul Signac Biography.md`. The site research draws primarily on museum collection and artist records, including the Musee d'Orsay, The Metropolitan Museum of Art, the National Gallery, MoMA, Kunstmuseum Den Haag, the National Museum of Western Art, and the Toledo Museum of Art. Individual collection links are included with each artwork in `app/data.ts`.
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+The included artwork files were supplied for this project. Before republishing, redistributing, or replacing them, confirm the applicable artwork, museum-image, and rights-holder permissions.
+
+## License
+
+No open-source license has been added yet. Obtain permission from the project owner before reusing the code or assets.
