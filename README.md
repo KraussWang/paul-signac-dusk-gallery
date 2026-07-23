@@ -1,82 +1,82 @@
 # Paul Signac — Light, Divided
 
-An English, reusable artist-portfolio website built around the colour, atmosphere, and divisionist brushwork of Paul Signac. The first edition presents Signac's life, artistic journey, and selected works through a five-page editorial gallery.
+一个以保罗·西涅克（Paul Signac）的色彩、光感与分色主义笔触为灵感的英文艺术家个人网站。首版以展览图录式的叙事呈现西涅克的生平、艺术历程和代表作品；页面结构与内容数据相互独立，也可作为其他艺术家或创作者的网站模板。
 
-**Live site:** [paul-signac-dusk-gallery.zhlei86.chatgpt.site](https://paul-signac-dusk-gallery.zhlei86.chatgpt.site)
+**在线预览：** [paul-signac-dusk-gallery.zhlei86.chatgpt.site](https://paul-signac-dusk-gallery.zhlei86.chatgpt.site)
 
-![Paul Signac — Light, Divided social preview](public/og.png)
+![Paul Signac — Light, Divided 社交分享图](public/og.png)
 
-## What is included
+## 项目内容
 
-- Five responsive routes: Home, About, Journey, Works, and Contact.
-- A central, typed content model for the artist profile, chronology, artwork records, and contact links.
-- A keyboard-accessible artwork viewer with filtering, focus management, and Escape-to-close behavior.
-- A visual system drawn from *Avignon. Soir (le chateau des Papes)* (1909): river blue, dusk violet, coral architecture, and warm evening light.
-- Subtle CSS colour fragments and gradients that evoke Divisionism without compromising reading comfort.
-- Reduced-motion support and mobile-friendly navigation.
-- Local artwork assets, a custom favicon, and a matching social-sharing card.
+- 五个响应式页面：首页、关于我、艺术历程、作品和联系我。
+- 集中、类型化的数据模型，管理艺术家资料、时间线、作品记录和联系方式。
+- 支持筛选与详情弹层的作品画廊，可通过键盘操作，并支持 Escape 关闭与焦点管理。
+- 以《阿维尼翁·夜晚（教皇宫）》(*Avignon. Soir (le chateau des Papes)*, 1909) 为视觉核心：河流蓝、暮色紫、珊瑚建筑与金橙色晚光。
+- 以 CSS 渐变和克制的色彩碎片呼应分色主义，不干扰长文阅读。
+- 适配移动端导航，并遵循 `prefers-reduced-motion` 减弱动画偏好。
+- 包含五幅本地作品图、定制站点图标与社交分享图。
 
-## Technology
+## 技术栈
 
 - React 19 + TypeScript
 - Vinext / Vite
-- Plain CSS with responsive layouts and accessible interaction patterns
+- 原生 CSS（响应式布局与无障碍交互）
 - pnpm
 
-## Run locally
+## 本地运行
 
-Use Node.js 22.13 or newer and pnpm.
+请使用 Node.js 22.13 或更高版本，以及 pnpm。
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Create a production build:
+构建生产版本：
 
 ```bash
 pnpm build
 ```
 
-Run the production render checks:
+运行生产渲染检查：
 
 ```bash
 pnpm test
 ```
 
-## Project structure
+## 目录结构
 
 ```text
 app/
-  about/             About page
-  contact/           Contact page
-  journey/           Timeline page
-  works/             Artwork gallery page
-  components/        Shared site chrome and accessible gallery dialog
-  data.ts            Reusable artist, timeline, artwork, and contact data
-  globals.css        Visual system and responsive styles
+  about/             “关于我”页面
+  contact/           “联系我”页面
+  journey/           艺术历程时间线
+  works/             作品画廊页面
+  components/        公共页面框架和无障碍作品详情弹层
+  data.ts            可复用的艺术家、时间线、作品与联系信息数据
+  globals.css        视觉系统与响应式样式
 public/
-  artworks/          Five curated local artwork images
-  og.png             Social-sharing image
+  artworks/          五幅精选作品图片
+  og.png             社交分享图
 tests/
   rendered-html.test.mjs
 ```
 
-## Reuse this as an artist-site template
+## 复用为个人网站模板
 
-The page structure and presentation are separated from the content. To adapt the site for another artist or creator:
+页面结构与内容数据已分离。若要替换为另一位艺术家或创作者：
 
-1. Replace the records in `app/data.ts`.
-2. Replace the images in `public/artworks/` and update their image paths and alt text.
-3. Adjust the colour tokens and typography in `app/globals.css`.
-4. Update the metadata and social image in `app/layout.tsx` and `public/og.png`.
+1. 在 `app/data.ts` 替换人物、作品、时间线和联系信息。
+2. 在 `public/artworks/` 替换图片，并同步更新图片路径和替代文本。
+3. 在 `app/globals.css` 调整配色变量与字体。
+4. 在 `app/layout.tsx` 和 `public/og.png` 更新站点元数据与社交分享图。
 
-## Research and image credits
+## 研究资料与图片说明
 
-The companion biography and source notes are maintained in the parent project folder as `Paul Signac Biography.md`. The site research draws primarily on museum collection and artist records, including the Musee d'Orsay, The Metropolitan Museum of Art, the National Gallery, MoMA, Kunstmuseum Den Haag, the National Museum of Western Art, and the Toledo Museum of Art. Individual collection links are included with each artwork in `app/data.ts`.
+本项目配套的生平资料与来源注释维护在上级目录的 `Paul Signac Biography.md`。网站研究主要参考以下博物馆及艺术机构的艺术家档案、馆藏页面：奥赛博物馆、纽约大都会艺术博物馆、英国国家美术馆、纽约现代艺术博物馆、海牙市立博物馆、国立西洋美术馆与托莱多艺术博物馆。各作品的馆藏链接可在 `app/data.ts` 中查看。
 
-The included artwork files were supplied for this project. Before republishing, redistributing, or replacing them, confirm the applicable artwork, museum-image, and rights-holder permissions.
+项目内的作品图像由项目方提供。再次发布、再分发或替换这些图片前，请自行确认作品、博物馆图像及相关权利人的使用许可。
 
-## License
+## 许可
 
-No open-source license has been added yet. Obtain permission from the project owner before reusing the code or assets.
+当前仓库尚未附加开源许可证。复用代码或素材前，请先取得项目所有者许可。
