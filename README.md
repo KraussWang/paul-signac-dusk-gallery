@@ -1,82 +1,135 @@
 # Paul Signac — Light, Divided
 
-一个以保罗·西涅克（Paul Signac）的色彩、光感与分色主义笔触为灵感的英文艺术家个人网站。首版以展览图录式的叙事呈现西涅克的生平、艺术历程和代表作品；页面结构与内容数据相互独立，也可作为其他艺术家或创作者的网站模板。
+[![Live site](https://img.shields.io/badge/Live-gallery.krausswang.cn-0B4F6C?style=flat-square)](https://gallery.krausswang.cn/)
+[![React](https://img.shields.io/badge/React-19-087EA4?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-**在线预览：** [paul-signac-dusk-gallery.zhlei86.chatgpt.site](https://paul-signac-dusk-gallery.zhlei86.chatgpt.site)
+> **光，被分割。** 一个以保罗·西涅克（Paul Signac）为主题的中英双语艺术家档案网站，围绕他的新印象派绘画、航海经历与分色主义理论展开叙事。
+
+**在线访问：** [gallery.krausswang.cn](https://gallery.krausswang.cn/)
 
 ![Paul Signac — Light, Divided 社交分享图](public/og.png)
 
-## 项目内容
+## 概览
 
-- 五个响应式页面：首页、关于我、艺术历程、作品和联系我。
-- 集中、类型化的数据模型，管理艺术家资料、时间线、作品记录和联系方式。
-- 支持筛选与详情弹层的作品画廊，可通过键盘操作，并支持 Escape 关闭与焦点管理。
-- 以《阿维尼翁·夜晚（教皇宫）》(*Avignon. Soir (le chateau des Papes)*, 1909) 为视觉核心：河流蓝、暮色紫、珊瑚建筑与金橙色晚光。
-- 以 CSS 渐变和克制的色彩碎片呼应分色主义，不干扰长文阅读。
-- 适配移动端导航，并遵循 `prefers-reduced-motion` 减弱动画偏好。
-- 包含五幅本地作品图、定制站点图标与社交分享图。
+本项目以展览图录般的节奏，呈现西涅克（1863—1935）的生平、艺术方法与代表作品。它既是一个可浏览的艺术教育网站，也保留了将内容替换为其他艺术家、工作室或创作者资料的清晰结构。
+
+### 主要功能
+
+- **中英双语切换**：导航栏一键切换中文与英文；优先记住访客的选择，首次访问时会参考浏览器语言。
+- **五个响应式页面**：首页、关于、艺术旅程、作品与联系页面。
+- **作品画廊**：按艺术阶段筛选作品，点击可查看详情、馆藏信息与外部博物馆记录。
+- **可访问性设计**：键盘可用的作品详情弹层、Escape 关闭、焦点管理、跳至正文链接，以及对 `prefers-reduced-motion` 的支持。
+- **内容与界面分离**：艺术家资料、时间线、作品与联系信息集中在数据层，便于维护与复用。
+- **视觉语言**：以河流蓝、暮色紫、珊瑚红与金橙色回应西涅克的色彩实践；CSS 渐变和节制的色彩颗粒为长文阅读保留空间。
 
 ## 技术栈
 
-- React 19 + TypeScript
+- React 19
+- TypeScript
 - Vinext / Vite
-- 原生 CSS（响应式布局与无障碍交互）
+- Next.js App Router 兼容层
+- 原生 CSS
+- Cloudflare Workers（部署）
 - pnpm
 
-## 本地运行
+## 本地开发
 
-请使用 Node.js 22.13 或更高版本，以及 pnpm。
+### 环境要求
+
+- Node.js `>= 22.13.0`
+- pnpm（可使用 Corepack 启用）
 
 ```bash
+corepack enable
 pnpm install
 pnpm dev
 ```
 
-构建生产版本：
+默认启动后，按终端输出打开本地地址。
+
+### 常用命令
+
+```bash
+# 构建生产版本
+pnpm build
+
+# 运行生产渲染测试
+pnpm test
+
+# 静态检查
+pnpm lint
+
+# 本地预览生产构建
+pnpm start
+```
+
+> 如果没有全局安装 pnpm，可将上述命令中的 `pnpm` 替换为 `corepack pnpm`。
+
+## 部署
+
+站点部署在 Cloudflare Workers。先完成生产构建，再使用生成的 Wrangler 配置发布：
 
 ```bash
 pnpm build
+pnpm exec wrangler deploy --config dist/server/wrangler.json
 ```
 
-运行生产渲染检查：
+部署前请确认 Wrangler 已登录，并拥有对应 Cloudflare 账户的 Workers 权限：
 
 ```bash
-pnpm test
+pnpm exec wrangler whoami
 ```
 
-## 目录结构
+## 项目结构
 
 ```text
 app/
-  about/             “关于我”页面
-  contact/           “联系我”页面
-  journey/           艺术历程时间线
-  works/             作品画廊页面
-  components/        公共页面框架和无障碍作品详情弹层
-  data.ts            可复用的艺术家、时间线、作品与联系信息数据
-  globals.css        视觉系统与响应式样式
+├── about/                  # 艺术家介绍
+├── contact/                # 联系页面
+├── journey/                # 生平与艺术旅程时间线
+├── works/                  # 作品画廊
+├── components/
+│   ├── ArtworkGallery.tsx  # 筛选、详情弹层与键盘交互
+│   ├── LanguageContext.tsx # 中英语言状态、持久化与翻译
+│   └── SiteChrome.tsx      # 站点导航、页脚与页面引言
+├── data.ts                 # 艺术家、作品、时间线及联系信息
+├── globals.css             # 视觉系统与响应式样式
+└── layout.tsx              # 全局布局与 SEO 元数据
 public/
-  artworks/          五幅精选作品图片
-  og.png             社交分享图
+├── artworks/               # 精选作品图像
+└── og.png                  # 社交分享图
 tests/
-  rendered-html.test.mjs
+└── rendered-html.test.mjs  # 服务端渲染测试
+worker/
+└── index.ts                # Cloudflare Worker 入口
 ```
 
-## 复用为个人网站模板
+## 双语实现说明
 
-页面结构与内容数据已分离。若要替换为另一位艺术家或创作者：
+语言状态由 `app/components/LanguageContext.tsx` 管理：
 
-1. 在 `app/data.ts` 替换人物、作品、时间线和联系信息。
-2. 在 `public/artworks/` 替换图片，并同步更新图片路径和替代文本。
-3. 在 `app/globals.css` 调整配色变量与字体。
-4. 在 `app/layout.tsx` 和 `public/og.png` 更新站点元数据与社交分享图。
+1. 访客可通过导航栏的「中文 / EN」按钮切换语言。
+2. 选择会保存到浏览器的 `localStorage`（键名：`gallery-language`）。
+3. 若没有保存过选择，站点会根据浏览器语言决定首次显示中文或英文。
+4. 切换后会同步更新页面 `lang` 属性，以改善辅助技术和搜索引擎的语言识别。
 
-## 研究资料与图片说明
+## 作为模板复用
 
-本项目配套的生平资料与来源注释维护在上级目录的 `Paul Signac Biography.md`。网站研究主要参考以下博物馆及艺术机构的艺术家档案、馆藏页面：奥赛博物馆、纽约大都会艺术博物馆、英国国家美术馆、纽约现代艺术博物馆、海牙市立博物馆、国立西洋美术馆与托莱多艺术博物馆。各作品的馆藏链接可在 `app/data.ts` 中查看。
+要将这个项目转换为另一位艺术家或创作者的网站，通常只需：
 
-项目内的作品图像由项目方提供。再次发布、再分发或替换这些图片前，请自行确认作品、博物馆图像及相关权利人的使用许可。
+1. 在 `app/data.ts` 中替换人物信息、作品、时间线和联系链接。
+2. 在 `public/artworks/` 中替换图像，并同步更新对应图片路径和替代文本。
+3. 在 `app/components/LanguageContext.tsx` 中更新中英文展示文案。
+4. 在 `app/globals.css` 中调整色彩变量、字体和版式。
+5. 在 `app/layout.tsx`、`public/og.png` 中更新 SEO 元数据和社交分享图。
+
+## 研究与图像说明
+
+网站的艺术史资料参考了博物馆及艺术机构的艺术家档案与馆藏页面；作品对应的馆藏链接可在 `app/data.ts` 中查看。
+
+项目内的艺术图像由项目方提供。若要再次发布、重新分发或替换图像，请自行确认作品、博物馆图像与相关权利人的授权范围。
 
 ## 许可
 
-当前仓库尚未附加开源许可证。复用代码或素材前，请先取得项目所有者许可。
+当前仓库未附加开源许可证。复用代码或素材前，请先取得项目所有者许可。
