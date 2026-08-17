@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
 import { Footer, Header } from "./components/SiteChrome";
+import { LanguageProvider } from "./components/LanguageContext";
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers();
@@ -57,14 +58,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <a className="skip-link" href="#main-content">
-          Skip to content
-        </a>
-        <Header />
-        <main id="main-content">{children}</main>
-        <Footer />
+        <LanguageProvider>
+          <a className="skip-link" href="#main-content">Skip to content</a>
+          <Header />
+          <main id="main-content">{children}</main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );
